@@ -19,7 +19,7 @@ const EmployeeDetails = () => {
     const fetchEmployee = async () => {
         try {
           // Replace 'YOUR_BACKEND_API_URL' with the actual URL of your backend API
-          const response = await axios.get(`http://localhost:3001/api/v1/emp/employees/${id}`);
+          const response = await axios.get(`http://localhost:3001/api/v1/emp/employee/${id}`);
           setEmployee(response.data);
         } catch (error) {
           console.error('Failed to fetch employees:', error.response.data);
