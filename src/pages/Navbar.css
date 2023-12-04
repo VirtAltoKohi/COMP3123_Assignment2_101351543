@@ -1,0 +1,26 @@
+.top-navbar {
+    background-color: #333;
+    overflow: hidden;
+}
+
+.top-navbar li {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 0px 16px 16px 8px;
+    text-decoration: none;
+}
+
+.top-navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-logout {
+    background-color: #555;
+    padding: 4px 8px;
+}
+
+.nav-logout:hover {
+    background-color: rgb(200,0,0)
+}

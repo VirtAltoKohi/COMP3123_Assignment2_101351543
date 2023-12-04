@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../../contexts/AuthContext'
+
+import './Form.css'
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const { login } = useAuth();
     const [error, setError] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'))
-
-    useEffect(() => {
-        // Check if the useris logged in when the component mounts
-        setIsLoggedIn(!!localStorage.getItem('token'));
-    })
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -20,34 +21,20 @@ const LoginForm = () => {
             });
 
             if (response.status === 200) {
-                const data = response.data
-                localStorage.setItem('token', data.status);
-                setIsLoggedIn(true);
-                // Additional logic for successful login
-            } else {
-                setError('Invalid username or password');
+                login();
+                navigate('/Employee-list')
             }
         } catch (error) {
-            setError('An error occurred while logging in');
+            setError(error.response.data.message);
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsLoggedIn(false);
-    }
-
     return (
         <div>
-            {isLoggedIn ? (
-                <div>
-                    <p>Welcome, user!</p>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            ) : (
-                <div>
-                    <h2>Login</h2>
-                    <form>
+            <div className="nice-form">
+                <h2>Login</h2>
+                <form>
+                    <div className="form-group">
                         <label>
                             Username:
                             <input
@@ -56,23 +43,27 @@ const LoginForm = () => {
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </label>
-                        <br />
+                    </div>
+                    
+                    <br />
+                    <div className="form-group">
                         <label>
                             Password:
                             <input
-                                type='text'
+                                type='password'
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </label>
-                        <br />
-                        <button type='button' onClick={handleLogin}>
-                            Login
-                        </button>
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                    </form>
-                </div>
-            )}
+                    </div>
+                    
+                    <br />
+                    <button type='button' onClick={handleLogin}>
+                        Login
+                    </button>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                </form>
+            </div>
         </div>
     );
 };
